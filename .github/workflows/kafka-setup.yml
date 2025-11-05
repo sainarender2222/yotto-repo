@@ -1,0 +1,17 @@
+name: Kafka Setup (manual)
+on:
+  workflow_dispatch:
+jobs:
+  setup-kafka:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure Kubeconfig
+        run: |
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 --decode > kubeconfig.yaml
+          mkdir -p ~/.kube && mv kubeconfig.yaml ~/.kube/config
+      - name: Deploy Kafka stack
+        run: |
+          kubectl apply -f k8s/kafka/kafka-single-node.yaml
+          kubectl apply -f k8s/kafka/kafka-topic-job.yaml
+          kubectl apply -f k8s/kafka/kafka-consumer.yaml

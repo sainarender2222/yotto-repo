@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-consumer
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-consumer
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer
+    spec:
+      containers:
+        - name: consumer
+          image: bitnami/python:3.11
+          command:
+            - python
+            - -u
+            - -c
+            - |
+              from kafka import KafkaConsumer
+              import json
+              consumer = KafkaConsumer(
+                  "website-events",
+                  bootstrap_servers="kafka.kafka.svc.cluster.local:9092",
+                  auto_offset_reset="earliest",
+                  enable_auto_commit=True,
+                  group_id="verifier",
+                  value_deserializer=lambda v: json.loads(v.decode("utf-8"))
+              )
+              print("Listening for WebsiteCreated events...")
+              for msg in consumer:
+                  print("Event received:", msg.value)

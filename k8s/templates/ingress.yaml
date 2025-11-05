@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{APP_NAME}}-ing
+  namespace: {{NAMESPACE}}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    cert-manager.io/cluster-issuer: "{{CLUSTER_ISSUER}}"
+    external-dns.alpha.kubernetes.io/hostname: "{{DOMAIN}}"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: {{DOMAIN}}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{APP_NAME}}-svc
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - {{DOMAIN}}
+      secretName: {{APP_NAME}}-tls-secret

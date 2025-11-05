@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: wildcard-{{BASE_DOMAIN}}-tls
+  namespace: cert-manager
+spec:
+  secretName: wildcard-{{BASE_DOMAIN}}-tls
+  dnsNames:
+    - "*.{{BASE_DOMAIN}}"
+  issuerRef:
+    name: letsencrypt-azure-dns
+    kind: ClusterIssuer
