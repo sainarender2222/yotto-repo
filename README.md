@@ -113,22 +113,6 @@ Login → admin / admin
 
 ---
 
-## Why This Project Is Useful
 
-✅ Isolates tenants for security  
-✅ Scales workloads independently  
-✅ Fully automated deployments  
-✅ Hands-free TLS + domain setup  
-✅ Event-driven automation and monitoring  
 
-Perfect for:
-- SaaS platforms
-- Developer portals
-- AI / ML workload hosting
-- Multi-tenant POCs
 
----
-
-## License
-
-Free to use and extend. Build your own cloud hosting service! 🚀
